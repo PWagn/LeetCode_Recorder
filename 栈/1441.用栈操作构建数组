@@ -1,1 +1,26 @@
-
+#栈#简单
+#步骤
+#思路
+class Solution {
+public:
+	vector<string> buildArray(vector<int>& target, int n) {
+		stack<int> s;
+		for (int i = n; i >= 1; i--) {
+			s.push(i);
+		}
+		vector<string> res;
+		for (int i = 0; i < target.size();i++) {
+			int x = target[i];
+			while (s.top()!=x) {
+				res.push_back("Push");
+				s.pop();
+				res.push_back("Pop");
+			}
+			if (s.top() == x) {
+				res.push_back("Push");
+				s.pop();
+			}
+		}
+		return res;
+	}
+};
