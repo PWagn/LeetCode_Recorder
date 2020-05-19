@@ -1,1 +1,41 @@
-
+class Solution {
+public:
+    vector<int> exclusiveTime(int n, vector<string>& logs) {
+        vector<int> result(n , 0);
+        stack<pair<int, int>> myStack;//辅助栈，<first, second>分别代表<函数id，起始时间>
+        //扫描所有log
+        for (auto &log : logs){
+            string operation = "";//id的操作，“start”或者“end”
+            int funcId = 0, timeStamp = 0, index = 0, logSize = log.size();//log的函数id、操作时间戳
+            //第一步：读取函数id
+            while (log[index] != ':'){
+                funcId = funcId * 10 + log[index++] - '0';
+            }
+            index += 1;
+            //第二步：读取操作类型
+            while (log[index] != ':'){
+                operation += log[index++];
+            }
+            index += 1;
+            //第三步：读取时间戳
+            while (index < logSize){
+                timeStamp = timeStamp * 10 + log[index++] - '0';
+            }
+            //第四步：根据操作进行不同的处理
+            if (operation == "start"){
+                //如果是函数start，直接放入stack中
+                myStack.push({funcId, timeStamp});
+            }
+            else{
+                int runTime = timeStamp - myStack.top().second + 1;//计算栈顶id运行时间
+                myStack.pop();
+                result[funcId] += runTime;//加入到总时间中
+                //如果此时栈还不为空，则说明当前栈顶函数里面嵌套了当前函数id，需要减去当前函数运行的时间
+                if (!myStack.empty()){
+                    result[myStack.top().first] -= runTime;
+                }
+            }
+        }
+        return result;
+    }
+};
