@@ -1,1 +1,12 @@
-
+class Solution {
+public:
+    int minAddToMakeValid(string S) {
+        int blance = 0, step = 0;
+        for (auto&& p: S) {
+            if (p == '(') ++blance;
+            else  blance > 0 ? --blance : ++step;
+        }
+        step += blance;
+        return step;
+    }
+};
