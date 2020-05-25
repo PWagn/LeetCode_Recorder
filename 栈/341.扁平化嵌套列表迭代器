@@ -1,1 +1,31 @@
+class NestedIterator {
+private:
+  stack<NestedInteger> st;
+public:
+  NestedIterator(vector<NestedInteger> &nestedList) {
+    for (auto iter = nestedList.rbegin(); iter != nestedList.rend(); iter++) {
+      parseData(*iter);
+    }
+  }
+  void parseData(NestedInteger item) {
+    if (item.isInteger()) {
+      st.push(item);
+    } else {
+      auto list = item.getList();
+      for (auto iter = list.rbegin(); iter != list.rend(); iter++) {
+        parseData(*iter);
+      }
+    }
+  }
 
+  int next() {
+    auto t = st.top();
+    st.pop();
+    return t.getInteger();
+  }
+
+  bool hasNext() {
+    if (st.empty()) return false;
+    return true;
+  }
+};
