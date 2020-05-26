@@ -1,1 +1,31 @@
+class Solution {
+public:
+  int scoreOfParentheses(string S) {
+    int left = -1;
+    stack<int> s;
+    for (auto c : S) {
+      if (c == '(') {
+        s.push(left);
+       }
+       if (c == ')') {
+          int sum = 0;
+          if (s.top() == left) {
+            sum = 1;
+            s.pop();
+          } else {
+            sum = s.top() * 2;
+            s.pop();
+            s.pop();
+          }
+          while ((!s.empty())&&(s.top() != left)) {
+          sum += s.top();
+          s.pop();
+        }
+        s.push(sum);
+     }
+    }
+  return s.top();
+  }
+};
+
 
